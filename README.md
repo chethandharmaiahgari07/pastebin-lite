@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 📝 Pastebin Lite
 
-## Getting Started
+A simple and lightweight **Pastebin-like application** built as a take-home assignment.  
+It allows users to create text pastes and share them via unique URLs with optional expiry rules.
 
-First, run the development server:
+---
 
-```bash
+## ✨ Features
+- 📄 Create a text paste
+- 🔗 Generate a unique shareable URL
+- 👀 View paste directly in the browser
+- ⏳ Optional expiry by time (TTL)
+- 🔢 Optional expiry by number of views
+- 🗄️ Redis-backed persistence
+
+---
+
+## 🛠️ Tech Stack
+- ⚡ **Next.js** (App Router)
+- 🟦 **TypeScript**
+- 🔴 **Upstash Redis**
+- ☁️ **Vercel**
+
+---
+
+## 🔌 API Endpoints
+
+### 🩺 Health Check
+**GET** `/api/healthz`
+
+Response:
+```json
+{ "ok": true }
+
+
+➕ Create Paste
+
+POST /api/pastes
+
+Request Body:
+
+{
+  "content": "Hello Aganitha!",
+  "ttl_seconds": 60,
+  "max_views": 5
+}
+
+
+Response:
+
+{
+  "id": "AbC123",
+  "url": "https://<domain>/p/AbC123"
+}
+
+📥 Fetch Paste (API)
+
+GET /api/pastes/:id
+
+Response:
+
+{
+  "content": "Hello Aganitha!",
+  "remaining_views": 4,
+  "expires_at": "2025-01-01T10:00:00.000Z"
+}
+
+🌐 View Paste (Browser)
+
+GET /p/:id
+
+Displays the paste content directly in the browser.
+
+▶️ Running Locally
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Open 👉 http://localhost:3000
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+🗄️ Persistence
 
-## Learn More
+All paste data is stored using Redis (Upstash) to ensure fast access and persistence across requests.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+🧪 Notes
+Supports deterministic testing using TEST_MODE and x-test-now-ms header
+UI is intentionally minimal — focus is on backend functionality and correctness
